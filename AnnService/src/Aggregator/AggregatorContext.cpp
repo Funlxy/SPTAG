@@ -16,6 +16,7 @@ RemoteMachine::RemoteMachine()
 }
 
 
+// 构造即初始化
 AggregatorContext::AggregatorContext(const std::string& p_filePath)
     : m_initialized(false)
 {

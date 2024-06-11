@@ -901,6 +901,8 @@ void ProcessWithoutMPI() {
         exit(1);
     }
     if (rank == 0) {
+
+        // 保存
         SaveCenters(args.centers, args._K, args._D, options.m_centers, options.m_lambda);
         SPTAGLIB_LOG(Helper::LogLevel::LL_Info, "final dist:%f\n", currDist);
         for (int i = 0; i < args._K; i++)
@@ -910,8 +912,10 @@ void ProcessWithoutMPI() {
 
 template <typename T>
 void Partition() {
+    // 要有输出目录
     if (options.m_outdir.compare("-") == 0) return;
 
+    // 解析参数用的
     auto vectorReader = Helper::VectorSetReader::CreateInstance(std::make_shared<Helper::ReaderOptions>(options));
     if (ErrorCode::Success != vectorReader->LoadFile(options.m_inputFiles))
     {
@@ -924,6 +928,7 @@ void Partition() {
 
     COMMON::Dataset<T> data(vectors->Count(), vectors->Dimension(), 1024*1024, vectors->Count() + 1, (T*)vectors->GetData());
 
+    // short
     COMMON::Dataset<LabelType> label;
     if (label.Load(options.m_labels, vectors->Count(), vectors->Count()) != ErrorCode::Success) {
         SPTAGLIB_LOG(Helper::LogLevel::LL_Error, "Failed to read labels.\n");

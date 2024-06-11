@@ -17,6 +17,7 @@ endfunction()
 if(NOT WIN32)
     CXX_COMPILER_DUMPVERSION(CXX_COMPILER_VERSION)
 endif()
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     # require at least gcc 5.0
@@ -115,12 +116,12 @@ else()
     message (FATAL_ERROR "Could not find Boost >= 1.67!")
 endif()
 
-option(GPU "GPU" ON)
+option(GPU "GPU" OFF)
 option(LIBRARYONLY "LIBRARYONLY" OFF)
 
 add_subdirectory (ThirdParty/zstd/build/cmake)
 
 add_subdirectory (AnnService)
-add_subdirectory (Test)
-add_subdirectory (GPUSupport)
-add_subdirectory (Wrappers)
+# add_subdirectory (Test)
+# add_subdirectory (GPUSupport)
+# add_subdirectory (Wrappers)

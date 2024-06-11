@@ -38,6 +38,7 @@ namespace SPTAG
             ~Dataset()
             {
                 if (ownData) ALIGN_FREE(data);
+                if(incBlocks.empty()) return;
                 for (T* ptr : incBlocks) ALIGN_FREE(ptr);
                 incBlocks.clear();
             }

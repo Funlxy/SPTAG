@@ -10,6 +10,8 @@
 
 using namespace SPTAG;
 
+// std::unique_ptr 实现了独享所有权的语义
+// 只能进行移动构造:转移所有权
 std::unique_ptr<SPTAG::Client::ClientWrapper> g_client;
 
 int main(int argc, char** argv)
@@ -20,6 +22,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
+    // 创建对象
     g_client.reset(new SPTAG::Client::ClientWrapper(options));
     if (!g_client->IsAvailable())
     {
