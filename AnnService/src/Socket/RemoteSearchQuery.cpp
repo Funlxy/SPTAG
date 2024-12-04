@@ -132,6 +132,7 @@ RemoteSearchResult::Write(std::uint8_t* p_buffer) const
     p_buffer = SimpleSerialization::SimpleWriteBuffer(MirrorVersion(), p_buffer);
 
     p_buffer = SimpleSerialization::SimpleWriteBuffer(m_status, p_buffer);
+    // 先写入有多少个结果
     p_buffer = SimpleSerialization::SimpleWriteBuffer(static_cast<std::uint32_t>(m_allIndexResults.size()), p_buffer);
     for (const auto& indexRes : m_allIndexResults)
     {
@@ -142,6 +143,7 @@ RemoteSearchResult::Write(std::uint8_t* p_buffer) const
 
         for (const auto& res : indexRes.m_results)
         {
+            // 这样写。。。
             p_buffer = SimpleSerialization::SimpleWriteBuffer(res.VID, p_buffer);
             p_buffer = SimpleSerialization::SimpleWriteBuffer(res.Dist, p_buffer);
         }

@@ -13,7 +13,7 @@ using namespace SPTAG::Helper;
 ReaderOptions::ReaderOptions(VectorValueType p_valueType, DimensionType p_dimension, VectorFileType p_fileType, std::string p_vectorDelimiter, std::uint32_t p_threadNum, bool p_normalized)
     :  m_inputValueType(p_valueType), m_dimension(p_dimension), m_inputFileType(p_fileType), m_vectorDelimiter(p_vectorDelimiter), m_threadNum(p_threadNum), m_normalized(p_normalized)
 {
-    AddOptionalOption(m_threadNum, "-t", "--thread", "Thread Number.");
+    AddOptionalOption(m_threadNum, "", "--thread", "Thread Number.");
     AddOptionalOption(m_vectorDelimiter, "-dl", "--delimiter", "Vector delimiter.");
     AddOptionalOption(m_normalized, "-norm", "--normalized", "Vector is normalized.");
     AddRequiredOption(m_dimension, "-d", "--dimension", "Dimension of vector.");

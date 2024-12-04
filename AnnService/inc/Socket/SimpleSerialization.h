@@ -57,6 +57,7 @@ namespace SimpleSerialization
     inline std::uint8_t*
     SimpleWriteBuffer<std::string>(const std::string& p_val, std::uint8_t* p_buffer)
     {
+        // 写入长度
         p_buffer = SimpleWriteBuffer(static_cast<std::uint32_t>(p_val.size()), p_buffer);
 
         std::memcpy(p_buffer, p_val.c_str(), p_val.size());

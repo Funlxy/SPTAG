@@ -43,7 +43,7 @@ private:
 
     std::shared_ptr<SearchExecutionContext> m_executionContext;
 
-    std::string m_queryString;
+    std::string m_queryString; // 消息body
 
     std::vector<std::shared_ptr<VectorIndex>> m_selectedIndex;
 };

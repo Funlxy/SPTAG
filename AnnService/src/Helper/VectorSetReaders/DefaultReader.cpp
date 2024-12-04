@@ -38,11 +38,13 @@ std::shared_ptr<VectorSet>
 DefaultVectorReader::GetVectorSet(SizeType start, SizeType end) const
 {
     auto ptr = f_createIO();
+    // 打开一个文件
     if (ptr == nullptr || !ptr->Initialize(m_vectorOutput.c_str(), std::ios::binary | std::ios::in)) {
         SPTAGLIB_LOG(Helper::LogLevel::LL_Error, "Failed to read file %s.\n", m_vectorOutput.c_str());
         throw std::runtime_error("Failed read file");
     }
 
+    // 读取向量的行、列
     SizeType row;
     DimensionType col;
     if (ptr->ReadBinary(sizeof(SizeType), (char*)&row) != sizeof(SizeType)) {
@@ -56,12 +58,16 @@ DefaultVectorReader::GetVectorSet(SizeType start, SizeType end) const
     
     if (start > row) start = row;
     if (end < 0 || end > row) end = row;
+    // start = 0, end = row
+    // 向量总大小: 向量数目*维度*typesize
     std::uint64_t totalRecordVectorBytes = ((std::uint64_t)GetValueTypeSize(m_options->m_inputValueType)) * (end - start) * col;
     ByteArray vectorSet;
     if (totalRecordVectorBytes > 0) {
         vectorSet = ByteArray::Alloc(totalRecordVectorBytes);
         char* vecBuf = reinterpret_cast<char*>(vectorSet.Data());
+        // 向量数目与维度的offset
         std::uint64_t offset = ((std::uint64_t)GetValueTypeSize(m_options->m_inputValueType)) * start * col + sizeof(SizeType) + sizeof(DimensionType);
+        // 读取向量
         if (ptr->ReadBinary(totalRecordVectorBytes, vecBuf, offset) != totalRecordVectorBytes) {
             SPTAGLIB_LOG(Helper::LogLevel::LL_Error, "Failed to read VectorSet!\n");
             throw std::runtime_error("Failed read file");

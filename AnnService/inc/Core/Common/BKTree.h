@@ -320,13 +320,16 @@ namespace SPTAG
             SizeType batchEnd = min(first + samples, last);
             float lambda = 0, currDist, minClusterDist = MaxDist;
             for (int numKmeans = 0; numKmeans < tryIters; numKmeans++) {
+                // 随机选k个点作为聚类中心
                 for (int k = 0; k < args._DK; k++) {
                     SizeType randid = COMMON::Utils::rand(last, first);
                     std::memcpy(args.centers + k*args._D, data[indices[randid]], sizeof(T)*args._D);
                 }
                 args.ClearCounts();
                 args.ClearDists(-MaxDist);
+                // 按照聚类分配
                 currDist = KmeansAssign<T, R>(data, indices, first, batchEnd, args, true, 0);
+                // 更优的方案?
                 if (currDist < minClusterDist) {
                     minClusterDist = currDist;
                     memcpy(args.newTCenters, args.centers, sizeof(T)*args._K*args._D);
@@ -410,7 +413,12 @@ namespace SPTAG
 
             return CountStd;
         }
-
+        /**
+        
+        通过尝试不同的lambdaFactor值(0.001到1000),寻找使聚类结果最均匀的最佳参数
+对每个lambdaFactor值进行k-means聚类,并计算聚类结果的标准差
+返回产生最小标准差(即最均匀聚类结果)的lambdaFactor值
+         */
         template <typename T>
         float DynamicFactorSelect(const Dataset<T> & data,
             std::vector<SizeType> & indices, const SizeType first, const SizeType last,

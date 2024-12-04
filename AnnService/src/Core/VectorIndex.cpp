@@ -453,6 +453,7 @@ VectorIndex::BuildIndex(std::shared_ptr<VectorSet> p_vectorSet,
 
 ErrorCode
 VectorIndex::SearchIndex(const void* p_vector, int p_vectorCount, int p_neighborCount, bool p_withMeta, BasicResult* p_results) const {
+    // 这样计算一个vector的size
     size_t vectorSize = GetValueTypeSize(GetVectorValueType()) * GetFeatureDim();
 #pragma omp parallel for schedule(dynamic,10)
     for (int i = 0; i < p_vectorCount; i++) {
