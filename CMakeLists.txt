@@ -6,13 +6,20 @@ cmake_minimum_required (VERSION 3.12)
 project (SPTAGLib)
 
 function(CXX_COMPILER_DUMPVERSION _OUTPUT_VERSION)
-  exec_program(${CMAKE_CXX_COMPILER}
-    ARGS ${CMAKE_CXX_COMPILER_ARG1} -dumpversion
+  execute_process(
+    COMMAND ${CMAKE_CXX_COMPILER} -dumpversion
+    RESULT_VARIABLE RESULT
     OUTPUT_VARIABLE COMPILER_VERSION
-  )
+    ERROR_VARIABLE COMPILER_ERROR
+    )
+  
+  if(NOT RESULT EQUAL 0)
+    message(FATAL_ERROR "Failed to get compiler version: ${COMPILER_ERROR}")
+  endif()
 
   set(${_OUTPUT_VERSION} ${COMPILER_VERSION} PARENT_SCOPE)
 endfunction()
+
 
 if(NOT WIN32)
     CXX_COMPILER_DUMPVERSION(CXX_COMPILER_VERSION)
@@ -122,6 +129,3 @@ option(LIBRARYONLY "LIBRARYONLY" OFF)
 add_subdirectory (ThirdParty/zstd/build/cmake)
 
 add_subdirectory (AnnService)
-# add_subdirectory (Test)
-# add_subdirectory (GPUSupport)
-add_subdirectory (Wrappers)

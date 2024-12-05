@@ -85,16 +85,6 @@ install(TARGETS SPTAGLib SPTAGLibStatic
 #       LIBRARY DESTINATION lib)
 # endif()
 
-# file(GLOB_RECURSE SSD_SERVING_HDR_FILES ${AnnService}/inc/SSDServing/*.h)
-# file(GLOB_RECURSE SSD_SERVING_FILES ${AnnService}/src/SSDServing/*.cpp)
-
-# add_executable(ssdserving ${SSD_SERVING_HDR_FILES} ${SSD_SERVING_FILES})
-# target_link_libraries(ssdserving SPTAGLibStatic ${Boost_LIBRARIES})
-# target_compile_definitions(ssdserving PRIVATE _exe)
-
-# for Test
-# add_library(ssdservingLib ${SSD_SERVING_HDR_FILES} ${SSD_SERVING_FILES})
-# target_link_libraries(ssdservingLib SPTAGLibStatic ${Boost_LIBRARIES})
 
 find_package(MPI)
 if (MPI_FOUND)
@@ -106,8 +96,3 @@ if (MPI_FOUND)
     add_executable(balanceddatapartition ${PARTITION_FILES})
     target_link_libraries(balanceddatapartition SPTAGLibStatic ${Boost_LIBRARIES} ${MPI_CXX_LIBRARIES})
 endif()
-
-# install(TARGETS ssdservingLib ssdserving
-#   RUNTIME DESTINATION bin
-#   ARCHIVE DESTINATION lib
-#   LIBRARY DESTINATION lib)

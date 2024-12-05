@@ -165,7 +165,7 @@ namespace SPTAG
                 files->push_back(m_sBKTFilename);
                 files->push_back(m_sGraphFilename);
                 files->push_back(m_sDeleteDataPointsFilename);
-                return std::move(files);
+                return files;
             }
 
             ErrorCode SaveConfig(std::shared_ptr<Helper::DiskIO> p_configout);
